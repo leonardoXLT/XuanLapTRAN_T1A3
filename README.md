@@ -63,6 +63,8 @@ Use Trello board
 ![1812b](./docs/181223_b.PNG)
 ![1812c](./docs/181223_c.PNG)
 
+---
+
 #### 18 - 19/12/2023
 
 - Created a more detailed Implementation plan to follow/update
@@ -73,14 +75,18 @@ Use Trello board
 
 ![1912a](./docs/1912a.PNG)
 
+---
+
 #### 20 - 21/12/2023
 
 - Time spent for preparing second interview for a job opening (positive feedback)
-- Less works done until 21/12/2023
+- Less works done until evening 21/12/2023, but back on track.
 - Created a more detailed README file, pushed to GitHub Repository (private)
 - Worked on "Main Menu" and feature "Create a memory palace"
 
 ![1912a](./docs/1912a.PNG)
+
+---
 
 ## Help Documentation
 
