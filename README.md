@@ -88,6 +88,10 @@ Use Trello board
 
 ---
 
+#### 22 - 23/12/2023
+
+- Created Menu
+
 ## Help Documentation
 
 The help documentation for MemPal provides a set of instructions on how to install and use the application. The help documentation covers the following topicsL
