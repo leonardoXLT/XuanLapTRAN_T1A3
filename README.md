@@ -84,13 +84,35 @@ Use Trello board
 - Created a more detailed README file, pushed to GitHub Repository (private)
 - Worked on "Main Menu" and feature "Create a memory palace"
 
-![1912a](./docs/1912a.PNG)
+
 
 ---
 
 #### 22 - 23/12/2023
 
-- Created Menu, CSV
+- Spent most of my time coding and testing. 
+- Created Menu, CSV, functions.
+- Getting familiar with PEP8, DRY, error handling.
+
+![2312a](./docs/2312a.PNG)
+![2312a](./docs/menu.PNG)
+![2312a](./docs/create.PNG)
+![2312a](./docs/view_a.PNG)
+
+---
+
+#### 24 - 23/12/2023
+
+- Spent most of my time coding and testing. 
+- Created Menu, CSV, functions.
+- Getting familiar with PEP8, DRY, error handling.
+
+![2312a](./docs/2312a.PNG)
+![2312a](./docs/menu.PNG)
+![2312a](./docs/create.PNG)
+![2312a](./docs/view_a.PNG)
+
+---
 
 ## Help Documentation
 
