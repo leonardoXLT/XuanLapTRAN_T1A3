@@ -17,6 +17,17 @@ except FileNotFoundError:
     todo_file.close()
     print("In except block")
 
+# Below will be moved later to functions.py
+
+def create_mempal(file_name):
+    print("Create MemPal")
+    
+def view_edit_mempal(file_name):
+    print("view_edit_mempal")
+
+def minigame(file_name):
+    print("minigame")
+
 def menu():
     print("1. Create New Memory Palace")
     print("2. View/Edit Memory Palace")
@@ -30,12 +41,13 @@ users_choice = ""
 while users_choice != "4":
     users_choice = menu()
     if (users_choice == "1"):
-        print("1")
+        create_mempal(file_name)
     elif (users_choice == "2"):
-        print("2")
+        view_edit_mempal(file_name)
     elif (users_choice == "3"):
-        print("3")
+        minigame(file_name)
     elif (users_choice == "4"):
         continue
     else:
         print("Invalid Input")
+
