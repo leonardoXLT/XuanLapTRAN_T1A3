@@ -99,9 +99,36 @@ def minigame(file_name):
         print("No Memory Palaces found.")
         return
 
-# Select a Memory Palace (number) to play:
-# Ask a number of questions, equal to 60% of number of loci
-# score = int((correct_answers / questions_count) * 100)
+    # Sort the memory palaces by score
+    memory_palaces.sort(key=lambda x: int(x[-1]), reverse=True)
+
+    for i, palace in enumerate(memory_palaces):
+        print(f"{i+1}. {palace[0]} - Score: {palace[-1]}%")
+
+    palace_index = int(input("Select a Memory Palace (number) to play: ")) - 1
+    loci = memory_palaces[palace_index][1:-1]  # Exclude the name and score
+    questions_count = int(len(loci) * 0.6)
+    questions = random.sample(loci, questions_count)
+
+    correct_answers = 0
+    for question in questions:
+        answer = input(f"What is the item at locus {loci.index(question) + 1}?: ")
+        if answer == question:
+            correct_answers += 1
+
+    score = int((correct_answers / questions_count) * 100)
+    print(f"Your score: {score}%")
+
+    # Update the score in the file
+    scores = list(map(int, memory_palaces[palace_index][-3:]))  # Get the last 3 scores
+    scores.append(score)
+    if len(scores) > 3:
+        scores.pop(0)  # Keep only the last 3 scores
+    average_score = int(statistics.mean(scores))
+    memory_palaces[palace_index][-1] = average_score
+    with open(file_name, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(memory_palaces)
 
 def menu():
     print("Welcome to MemPal - your Memory Manager!")
@@ -124,9 +151,8 @@ while users_choice != "4":
     elif (users_choice == "3"):
         minigame(file_name)
     elif (users_choice == "4"):
-        continue
+        break
     else:
         print("Invalid Input")
-
 
 print("THANK YOU FOR USING MEMPAL!!")
