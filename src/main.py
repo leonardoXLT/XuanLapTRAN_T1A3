@@ -50,30 +50,45 @@ def view_edit_mempal(file_name):
         print("No Memory Palaces found.")
         return
 
+    # Sort the memory palaces by score
+    memory_palaces.sort(key=lambda x: int(x[-1]), reverse=True)
+
     for i, palace in enumerate(memory_palaces):
         print(f"{i+1}. {palace[0]} - Score: {palace[-1]}%")
 
-    choice = input("Choose an option: [A]dd, [E]dit, [D]elete, [B]ack: ")
-    if choice.lower() == "a":
-        create_mempal(file_name)
-    elif choice.lower() == "e":
-        edit_index = int(input("Enter the number of the Memory Palace to edit: ")) - 1
-        new_locus = input("Enter the new locus: ")
-        memory_palaces[edit_index].append(new_locus)
-        with open(file_name, "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerows(memory_palaces)
-    elif choice.lower() == "d":
-        delete_index = int(input("Enter the number of the Memory Palace to delete: ")) - 1
-        del memory_palaces[delete_index]
-        with open(file_name, "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerows(memory_palaces)
-    elif choice.lower() == "b":
+    palace_index = input("Select a Memory Palace (number) or 'b' to go back: ")
+    if palace_index.lower() == 'b':
         return
-    else:
-        print("Invalid choice. Please enter 'a', 'e', 'd', or 'b'.")
+    palace_index = int(palace_index) - 1
 
+    print(f"Memory Palace: {memory_palaces[palace_index][0]}")
+    print("Loci:")
+    for i, locus in enumerate(memory_palaces[palace_index][1:-1], start=1):
+        print(f"{i}.{locus}")
+
+    while True:  # Add this loop to keep asking until a valid choice is made
+        choice = input("Choose: 'Add next'(y), 'Edit'(e), 'Delete'(d), or 'Finish'(n): ")
+
+        if choice.lower() == "n":
+            break
+        elif choice.lower() == "y":
+            new_loci = add_mempal(memory_palaces[palace_index][1:-1])
+            memory_palaces[palace_index] = [memory_palaces[palace_index][0]] + new_loci + [memory_palaces[palace_index][-1]]
+        elif choice.lower() == "e":
+            locus_index = int(input("Enter the number of the locus to edit: "))
+            new_locus = input("Enter the new locus: ")
+            memory_palaces[palace_index][locus_index] = new_locus
+        elif choice.lower() == "d":
+            locus_index = int(input("Enter the number of the locus to delete: "))
+            del memory_palaces[palace_index][locus_index]
+        else:
+            print("Invalid choice. Please enter 'y', 'e', 'd', or 'n'.")
+            continue  # Continue the loop if an invalid choice is made
+
+    # Save the changes to the file
+    with open(file_name, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(memory_palaces)
 
 def minigame(file_name):
     with open(file_name, "r") as f:
