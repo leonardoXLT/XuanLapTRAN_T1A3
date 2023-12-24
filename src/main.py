@@ -1,34 +1,51 @@
+import csv
+import random
+import statistics
 
 file_name = "Mempal.csv"
 
 try:
-    # open the file in read mode
-    todo_file = open(file_name, "r")
-    todo_file.close()
+    mempal_file = open(file_name, "r")
+    mempal_file.close()
     print("In try block")
-    # if it throws error, it means the file doesn't exist
-    # if no error, it means the file exist
 except FileNotFoundError:
-    # Now, we know the file doesn't exist
-    # Create the file
-    todo_file = open(file_name, "w")
-    # We can also insert the first line into the file
-    todo_file.write("title,completed\n")
-    todo_file.close()
+    mempal_file = open(file_name, "w")
+    mempal_file.write("")
+    mempal_file.close()
     print("In except block")
 
-# Below will be moved later to functions.py
-
 def create_mempal(file_name):
-    print("Create MemPal")
-    
+    mempal_name = input("Enter the name of your Memory Palace: ")
+    loci = []
+
+    while True:
+        locus = input(f"Locus {len(loci) + 1}?: ")
+        loci.append(locus)
+
+        choice = input("Choose an option: 'Add next' (y) or 'Finish' (n): ")
+
+        if choice.lower() == "n":
+            break
+        elif choice.lower() != "y":
+            print("Invalid choice. Please enter 'y' or 'n'.")
+
+    with open(file_name, "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([mempal_name] + loci)
+    print("Memory Palace created successfully!")
+
+
 def view_edit_mempal(file_name):
     print("view_edit_mempal")
 
 def minigame(file_name):
     print("minigame")
 
+
+
 def menu():
+    print("Welcome to MemPal - your Memory Manager!")
+    print("\nMenu:")
     print("1. Create New Memory Palace")
     print("2. View/Edit Memory Palace")
     print("3. Play the mini game")
@@ -51,3 +68,5 @@ while users_choice != "4":
     else:
         print("Invalid Input")
 
+
+print("THANK YOU FOR USING MEMPAL!!")
