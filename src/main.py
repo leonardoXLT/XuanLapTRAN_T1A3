@@ -38,8 +38,9 @@ def create_mempal(file_name):
 
     with open(file_name, "a", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow([mempal_name] + loci + [0])  # Initialize score to 0
+        writer.writerow([mempal_name] + loci + [0, 0])  # Initialize score and average score to 0
     print("Memory Palace created successfully!")
+
 
 def view_edit_mempal(file_name):
     with open(file_name, "r") as f:
@@ -56,39 +57,49 @@ def view_edit_mempal(file_name):
     for i, palace in enumerate(memory_palaces):
         print(f"{i+1}. {palace[0]} - Score: {palace[-1]}%")
 
-    palace_index = input("Select a Memory Palace (number) or 'b' to go back: ")
-    if palace_index.lower() == 'b':
-        return
-    palace_index = int(palace_index) - 1
+    while True:  # Add this loop to keep asking until a valid choice is made
+        try:
+            palace_index = input("Select a Memory Palace (number) or 'b' to go back: ")
+            if palace_index.lower() == 'b':
+                return
+            palace_index = int(palace_index) - 1
+            break  # Break the loop if a valid choice is made
+        except ValueError:
+            print("Invalid input. Please enter a number or 'b' to go back.")
+            continue  # Continue the loop if an invalid choice is made
 
     print(f"Memory Palace: {memory_palaces[palace_index][0]}")
     print("Loci:")
-    for i, locus in enumerate(memory_palaces[palace_index][1:-1], start=1):
+    for i, locus in enumerate(memory_palaces[palace_index][1:-2], start=1):  # Exclude the name and scores
         print(f"{i}.{locus}")
 
     while True:  # Add this loop to keep asking until a valid choice is made
-        choice = input("Choose: 'Add next'(y), 'Edit'(e), 'Delete'(d), or 'Finish'(n): ")
+        choice = input("Choose: 'Add next'(y), 'Edit'(e), 'Delete'(d), 'Remove Memory Palace'(r), or 'Finish'(n): ")
 
         if choice.lower() == "n":
             break
         elif choice.lower() == "y":
-            new_loci = add_mempal(memory_palaces[palace_index][1:-1])
-            memory_palaces[palace_index] = [memory_palaces[palace_index][0]] + new_loci + [memory_palaces[palace_index][-1]]
+            new_loci = add_mempal(memory_palaces[palace_index][1:-2])
+            memory_palaces[palace_index] = [memory_palaces[palace_index][0]] + new_loci + memory_palaces[palace_index][-2:]
         elif choice.lower() == "e":
             locus_index = int(input("Enter the number of the locus to edit: "))
-            if 1 <= locus_index < len(memory_palaces[palace_index]) - 1:  # Check if the index is within the valid range
+            if 1 <= locus_index < len(memory_palaces[palace_index]) - 2:  # Check if the index is within the valid range
                 new_locus = input("Enter the new locus: ")
                 memory_palaces[palace_index][locus_index] = new_locus
             else:
                 print("Invalid locus number. Please enter a valid locus number.")
         elif choice.lower() == "d":
             locus_index = int(input("Enter the number of the locus to delete: "))
-            if 1 <= locus_index < len(memory_palaces[palace_index]) - 1:  # Check if the index is within the valid range
+            if 1 <= locus_index < len(memory_palaces[palace_index]) - 2:  # Check if the index is within the valid range
                 del memory_palaces[palace_index][locus_index]
             else:
                 print("Invalid locus number. Please enter a valid locus number.")
+        elif choice.lower() == "r":
+            del memory_palaces[palace_index]
+            print("Memory Palace removed successfully!")
+            break
         else:
-            print("Invalid choice. Please enter 'y', 'e', 'd', or 'n'.")
+            print("Invalid choice. Please enter 'y', 'e', 'd', 'r', or 'n'.")
             continue  # Continue the loop if an invalid choice is made
 
     # Save the changes to the file
@@ -111,9 +122,19 @@ def minigame(file_name):
     for i, palace in enumerate(memory_palaces):
         print(f"{i+1}. {palace[0]} - Score: {palace[-1]}%")
 
-    palace_index = int(input("Select a Memory Palace (number) to play: ")) - 1
-    loci = memory_palaces[palace_index][1:-1]  # Exclude the name and score
-    questions_count = int(len(loci) * 0.6)
+    while True:  # Add this loop to keep asking until a valid choice is made
+        try:
+            palace_index = input("Select a Memory Palace (number) to play or 'b' to go back: ")
+            if palace_index.lower() == 'b':
+                return
+            palace_index = int(palace_index) - 1
+            break  # Break the loop if a valid choice is made
+        except ValueError:
+            print("Invalid input. Please enter a number or 'b' to go back.")
+            continue  # Continue the loop if an invalid choice is made
+
+    loci = memory_palaces[palace_index][1:-2]  # Exclude the name and scores
+    questions_count = int(len(loci) * 0.75)  # Change to 75% of the total number of loci
     questions = random.sample(loci, questions_count)
 
     correct_answers = 0
@@ -126,12 +147,9 @@ def minigame(file_name):
     print(f"Your score: {score}%")
 
     # Update the score in the file
-    scores = list(map(int, memory_palaces[palace_index][-3:]))  # Get the last 3 scores
-    scores.append(score)
-    if len(scores) > 3:
-        scores.pop(0)  # Keep only the last 3 scores
-    average_score = int(statistics.mean(scores))
-    memory_palaces[palace_index][-1] = average_score
+    previous_score = int(memory_palaces[palace_index][-1])  # Get the previous score
+    average_score = int((previous_score + score) / 2)  # Calculate the average of the recent score and the previous score
+    memory_palaces[palace_index] = memory_palaces[palace_index][:1] + loci + [score, average_score]
     with open(file_name, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerows(memory_palaces)
