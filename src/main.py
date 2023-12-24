@@ -15,6 +15,23 @@ except FileNotFoundError:
     mempal_file.close()
     print("In except block")
 
+def add_mempal(existing_loci=None):
+    loci = existing_loci if existing_loci else []
+    while True:
+        locus = input(f"Locus {len(loci) + 1}?: ")
+        loci.append(locus)
+
+        while True:  # Add this loop to keep asking until a valid choice is made
+            choice = input("Choose: 'Add next'(y) or 'Finish'(n): ")
+
+            if choice.lower() == "n":
+                return loci
+            elif choice.lower() == "y":
+                break  # Break the inner loop if a valid choice is made
+            else:
+                print("Invalid choice. Please enter 'y' or 'n'.")
+                continue  # Continue the inner loop if an invalid choice is made
+
 def create_mempal(file_name):
     mempal_name = input("Enter the name of this Memory Palace: ")
     loci = []
@@ -23,17 +40,25 @@ def create_mempal(file_name):
         locus = input(f"Locus {len(loci) + 1}?: ")
         loci.append(locus)
 
-        choice = input("Choose: 'Add next'(y) or 'Finish'(n): ")
+        while True:  # Add this loop to keep asking until a valid choice is made
+            choice = input("Choose: 'Add next'(y) or 'Finish'(n): ")
+
+            if choice.lower() == "n":
+                break
+            elif choice.lower() == "y":
+                break  # Break the inner loop if a valid choice is made
+            else:
+                print("Invalid choice. Please enter 'y' or 'n'.")
+                continue  # Continue the inner loop if an invalid choice is made
 
         if choice.lower() == "n":
             break
-        elif choice.lower() != "y":
-            print("Invalid choice. Please enter 'y' or 'n'.")
 
     with open(file_name, "a", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([mempal_name] + loci)
     print("Memory Palace created successfully!")
+
 
 
 def view_edit_mempal(file_name):
