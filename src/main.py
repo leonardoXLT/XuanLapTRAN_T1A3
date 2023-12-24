@@ -15,14 +15,14 @@ except FileNotFoundError:
     print("In except block")
 
 def create_mempal(file_name):
-    mempal_name = input("Enter the name of your Memory Palace: ")
+    mempal_name = input("Enter the name of this Memory Palace: ")
     loci = []
 
     while True:
         locus = input(f"Locus {len(loci) + 1}?: ")
         loci.append(locus)
 
-        choice = input("Choose an option: 'Add next' (y) or 'Finish' (n): ")
+        choice = input("Choose: 'Add next'(y) or 'Finish'(n): ")
 
         if choice.lower() == "n":
             break
@@ -36,12 +36,30 @@ def create_mempal(file_name):
 
 
 def view_edit_mempal(file_name):
-    print("view_edit_mempal")
+    with open(file_name, "r") as f:
+        reader = csv.reader(f)
+        memory_palaces = list(reader)
+
+    if len(memory_palaces) == 0:
+        print("No Memory Palaces found.")
+        return
+
+# Select a Memory Palace (number): 
+# Show the list, with scores, sorted by scores. Score is average % of recent 3 games
+# Choose an option: [A]dd, [E]dit, [D]elete, [B]ack: 
 
 def minigame(file_name):
-    print("minigame")
+    with open(file_name, "r") as f:
+        reader = csv.reader(f)
+        memory_palaces = list(reader)
 
+    if len(memory_palaces) == 0:
+        print("No Memory Palaces found.")
+        return
 
+# Select a Memory Palace (number) to play:
+# Ask a number of questions, equal to 60% of number of loci
+# score = int((correct_answers / questions_count) * 100)
 
 def menu():
     print("Welcome to MemPal - your Memory Manager!")
