@@ -1,6 +1,7 @@
 import csv
 import random
 import statistics
+import os
 
 file_name = "Mempal.csv"
 
@@ -44,9 +45,30 @@ def view_edit_mempal(file_name):
         print("No Memory Palaces found.")
         return
 
-# Select a Memory Palace (number): 
-# Show the list, with scores, sorted by scores. Score is average % of recent 3 games
-# Choose an option: [A]dd, [E]dit, [D]elete, [B]ack: 
+    for i, palace in enumerate(memory_palaces):
+        print(f"{i+1}. {palace[0]} - Score: {palace[-1]}%")
+
+    choice = input("Choose an option: [A]dd, [E]dit, [D]elete, [B]ack: ")
+    if choice.lower() == "a":
+        create_mempal(file_name)
+    elif choice.lower() == "e":
+        edit_index = int(input("Enter the number of the Memory Palace to edit: ")) - 1
+        new_locus = input("Enter the new locus: ")
+        memory_palaces[edit_index].append(new_locus)
+        with open(file_name, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerows(memory_palaces)
+    elif choice.lower() == "d":
+        delete_index = int(input("Enter the number of the Memory Palace to delete: ")) - 1
+        del memory_palaces[delete_index]
+        with open(file_name, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerows(memory_palaces)
+    elif choice.lower() == "b":
+        return
+    else:
+        print("Invalid choice. Please enter 'a', 'e', 'd', or 'b'.")
+
 
 def minigame(file_name):
     with open(file_name, "r") as f:
