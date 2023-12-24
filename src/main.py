@@ -76,11 +76,17 @@ def view_edit_mempal(file_name):
             memory_palaces[palace_index] = [memory_palaces[palace_index][0]] + new_loci + [memory_palaces[palace_index][-1]]
         elif choice.lower() == "e":
             locus_index = int(input("Enter the number of the locus to edit: "))
-            new_locus = input("Enter the new locus: ")
-            memory_palaces[palace_index][locus_index] = new_locus
+            if 1 <= locus_index < len(memory_palaces[palace_index]) - 1:  # Check if the index is within the valid range
+                new_locus = input("Enter the new locus: ")
+                memory_palaces[palace_index][locus_index] = new_locus
+            else:
+                print("Invalid locus number. Please enter a valid locus number.")
         elif choice.lower() == "d":
             locus_index = int(input("Enter the number of the locus to delete: "))
-            del memory_palaces[palace_index][locus_index]
+            if 1 <= locus_index < len(memory_palaces[palace_index]) - 1:  # Check if the index is within the valid range
+                del memory_palaces[palace_index][locus_index]
+            else:
+                print("Invalid locus number. Please enter a valid locus number.")
         else:
             print("Invalid choice. Please enter 'y', 'e', 'd', or 'n'.")
             continue  # Continue the loop if an invalid choice is made
