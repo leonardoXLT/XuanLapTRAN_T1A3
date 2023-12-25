@@ -1,8 +1,10 @@
 import csv
 import random
-import statistics
-import os
+from colorama import Fore, Style, init
+from pyfiglet import figlet_format
+from colored import fg, bg, attr
 
+init()
 
 def add_mempal(existing_loci=None):
     loci = existing_loci if existing_loci else []
@@ -22,6 +24,7 @@ def add_mempal(existing_loci=None):
                 continue  # Continue the inner loop if an invalid choice is made
 
 def create_mempal(file_name):
+    print(Fore.GREEN + figlet_format("Creating New Memory Palace", font="small") + Style.RESET_ALL)
     mempal_name = input("Enter the name of this Memory Palace: ")
     loci = add_mempal()
 
@@ -32,6 +35,7 @@ def create_mempal(file_name):
 
 
 def view_edit_mempal(file_name):
+    print(Fore.GREEN + figlet_format("Viewing/Editing Memory Palace", font="small") + Style.RESET_ALL)
     try:
         with open(file_name, "r") as f:
             reader = csv.reader(f)
@@ -45,11 +49,11 @@ def view_edit_mempal(file_name):
         memory_palaces.sort(key=lambda x: int(x[-1]), reverse=True)
 
         for i, palace in enumerate(memory_palaces):
-            print(f"{i+1}. {palace[0]} - Score: {palace[-1]}%")
+            print(f"{Fore.GREEN}{i+1}. {palace[0]} - Score: {palace[-1]}%{Style.RESET_ALL}")
 
         while True:  # Add this loop to keep asking until a valid choice is made
             try:
-                palace_index = input("Select a Memory Palace (number) or 'b' to go back: ")
+                palace_index = input('%s%s%s' % (fg('red'), "Select a Memory Palace (number) or 'b' to go back: ", attr('reset')))
                 if palace_index.lower() == 'b':
                     return
                 palace_index = int(palace_index) - 1
@@ -65,7 +69,7 @@ def view_edit_mempal(file_name):
 
         while True:  # Add this loop to keep asking until a valid choice is made
             try:
-                choice = input("Choose: 'Add next'(y), 'Edit'(e), 'Delete'(d), 'Remove Memory Palace'(r), or 'Finish'(n): ")
+                choice = input('%s%s%s' % (fg('blue'), "Choose: 'Add next'(y), 'Edit'(e), 'Delete'(d), 'Remove Memory Palace'(r), or 'Finish'(n): ", attr('reset')))
 
                 if choice.lower() == "n":
                     break
@@ -117,12 +121,14 @@ def minigame(file_name):
         # Sort the memory palaces by score
         memory_palaces.sort(key=lambda x: int(x[-1]), reverse=True)
 
+        print(Fore.GREEN + figlet_format("Welcome! to MemPal minigame", font="speed") + Style.RESET_ALL)
+
         for i, palace in enumerate(memory_palaces):
-            print(f"{i+1}. {palace[0]} - Score: {palace[-1]}%")
+            print(f"{Fore.GREEN}{i+1}. {palace[0]} - Score: {palace[-1]}%{Style.RESET_ALL}")
 
         while True:  # Add this loop to keep asking until a valid choice is made
             try:
-                palace_index = input("Select a Memory Palace (number) to play or 'b' to go back: ")
+                palace_index = input('%s%s%s' % (fg('yellow'), "Select a Memory Palace (number) to play or 'b' to go back: ", attr('reset')))
                 if palace_index.lower() == 'b':
                     return
                 palace_index = int(palace_index) - 1
