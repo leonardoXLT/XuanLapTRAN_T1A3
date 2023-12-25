@@ -18,8 +18,8 @@ fi
 # Activate the virtual environment and install dependencies and run the application
 
 source mempal-env/bin/activate
-pip install colorama
-pip install pyfiglet
-pip install colored
+pip3 install colorama
+pip3 install pyfiglet
+pip3 install colored
 
-python main.py
+python3 main.py
